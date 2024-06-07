@@ -10,7 +10,12 @@ steps:
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.x'
+  displayName: 'Use Python 3.x'
+
 - script: |
+    # Install the 'distutils' module
+    pip install distutils
+    # Install the Azure CLI and add the Azure DevOps extension
     pip install azure-cli
     az extension add --name azure-devops
     # Create the variable group and set variables
@@ -18,6 +23,7 @@ steps:
   displayName: 'Create variable group'
   env:
     AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
 - script: |
     # Reference the variable group variables
     echo $(PipelineVariables.one)
