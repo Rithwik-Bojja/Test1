@@ -1,0 +1,17 @@
+name: testpipe1
+
+variables:
+- name: one
+  value: 4567
+
+trigger:
+- main
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- script: |
+      echo ${{ variables.one }}
+      echo "Test Suite ID: $(TestSuiteId)"
+      echo "Test Case ID: $(TestCaseId)"
