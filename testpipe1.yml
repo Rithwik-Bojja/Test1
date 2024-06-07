@@ -1,17 +1,30 @@
 name: testpipe1
 
-variables:
-- name: one
-  value: 4567
-
 trigger:
 - main
 
 pool:
-  vmImage: windows-latest
+  vmImage: 'windows-latest'
 
 steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
 - script: |
-      echo ${{ variables.one }}
-      echo "Test Suite ID: $(TestSuiteId)"
-      echo "Test Case ID: $(TestCaseId)"
+    pip install azure-cli
+    az extension add --name azure-devops
+    # Create the variable group and set variables
+    az pipelines variable-group create --name "PipelineVariables" --authorize true --variables one=4567 TestSuiteId=12345 TestCaseId=67890 
+  displayName: 'Create variable group'
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+- script: |
+    # Reference the variable group variables
+    echo $(PipelineVariables.one)
+    echo "Test Suite ID: $(PipelineVariables.TestSuiteId)"
+    echo "Test Case ID: $(PipelineVariables.TestCaseId)"
+  displayName: 'Use variables from variable group'
+  env:
+    PipelineVariables.one: $(PipelineVariables.one)
+    PipelineVariables.TestSuiteId: $(PipelineVariables.TestSuiteId)
+    PipelineVariables.TestCaseId: $(PipelineVariables.TestCaseId)
