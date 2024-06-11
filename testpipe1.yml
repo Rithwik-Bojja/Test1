@@ -7,16 +7,16 @@ pool:
 steps:
   - script: |
       echo "Hello Rithwik, I am setting varaibles"
-      echo "##vso[task.setvariable variable=rith_var_1]007"
-      echo "##vso[task.setvariable variable=rith_var_2]008"
+      echo "##vso[task.setvariable variable=rithvar1]007"
+      echo "##vso[task.setvariable variable=rithvar2]008"
     name: Rith_SetVariables
 
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
-        $r = "${env:rith_var_1}"
-        $r1 = "${env:rith_var_2}"
+        $r = "${env:rithvar1}"
+        $r1 = "${env:rithvar2}"
         $r_uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
         $rb = @{
           resources = @{
@@ -38,5 +38,5 @@ steps:
         Invoke-RestMethod -Uri $r_uri -Method Post -Body $rb -Headers $ri_h
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-       ri_var1: $(rith_var_1)
-       ri_var2: $(rith_var_2)
+       ri_var1: $(rithvar1)
+       ri_var2: $(rithvar2)
