@@ -9,7 +9,7 @@ steps:
       echo "Hello Rithwik, I am setting varaibles"
       echo "##vso[task.setvariable variable=rith_var_1]007"
       echo "##vso[task.setvariable variable=rith_var_2]008"
-    name: SetVariables
+    name: Rith_SetVariables
 
   - task: PowerShell@2
     inputs:
