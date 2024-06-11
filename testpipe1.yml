@@ -7,14 +7,16 @@ pool:
 steps:
   - script: |
       echo "Setting variables"
-      echo "##vso[task.setvariable variable=testSuiteId;isOutput=true]12345"
-      echo "##vso[task.setvariable variable=testCaseId;isOutput=true]67890"
+      echo "##vso[task.setvariable variable=testSuiteId]12345"
+      echo "##vso[task.setvariable variable=testCaseId]67890"
     name: SetVariables
 
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
+        $testSuiteId = "${env:testSuiteId}"
+        $testCaseId = "${env:testCaseId}"
         $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
         $body = @{
           resources = @{
@@ -25,8 +27,8 @@ steps:
             }
           }
           templateParameters = @{
-            testSuiteId = "$(testSuiteId)"
-            testCaseId = "$(testCaseId)"
+            testSuiteId = $testSuiteId
+            testCaseId = $testCaseId
           }
         } | ConvertTo-Json -Depth 10
         $headers = @{
@@ -40,3 +42,5 @@ steps:
         Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $headers
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      testSuiteId: $(testSuiteId)
+      testCaseId: $(testCaseId)
