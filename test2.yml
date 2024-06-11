@@ -4,15 +4,15 @@ pool:
   vmImage: 'windows-latest'
 
 parameters:
-  - name: testSuiteId
+  - name: ri_var1
     type: string
     default: ''
-  - name: testCaseId
+  - name: ri_var2
     type: string
     default: ''
 
 steps:
   - script: |
       echo "This pipeline was triggered by the first pipeline."
-      echo "Test Suite ID: ${{ parameters.testSuiteId }}"
-      echo "Test Case ID: ${{ parameters.testCaseId }}"
+      echo "Variable 1: ${{ parameters.ri_var1 }}"
+      echo "variable 2: ${{ parameters.ri_var2 }}"
