@@ -17,8 +17,8 @@ steps:
       script: |
         $rithvar1 = "${env:rithvar1}"
         $rithvar2 = "${env:rithvar2}"
-        $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
-        $body = @{
+        $rurl = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
+        $rb = @{
           resources = @{
             repositories = @{
               self = @{
@@ -31,16 +31,12 @@ steps:
             rithvar2 = $rithvar2
           }
         } | ConvertTo-Json -Depth 10
-        $headers = @{
+        $rh = @{
           Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
           "Content-Type" = "application/json"
         }
-        Write-Host "Triggering second pipeline..."
-        Write-Host "URI: $uri"
-        Write-Host "Body: $body"
-        Write-Host "Headers: $headers"
-        $response = Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $headers
-        Write-Host "Response: $($response | ConvertTo-Json -Depth 10)"
+        $rithresult = Invoke-RestMethod -Uri $rurl -Method Post -Body $rb -Headers $rh
+        Write-Host "Hello Rithwik the result is : $($rithresult | ConvertTo-Json -Depth 10)"
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       rithvar1: $(rithvar1)
