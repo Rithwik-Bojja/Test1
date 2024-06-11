@@ -2,23 +2,23 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-latest'  # Use a Windows agent
 
 steps:
   - script: |
-      echo "Hello Rithwik, I am setting varaibles"
-      echo "##vso[task.setvariable variable=rithvar1]007"
-      echo "##vso[task.setvariable variable=rithvar2]008"
-    name: RithSetVariables
+      echo "Setting variables"
+      echo "##vso[task.setvariable variable=testSuiteId]12345"
+      echo "##vso[task.setvariable variable=testCaseId]67890"
+    name: SetVariables
 
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
-        $r = "${env:rithvar1}"
-        $r1 = "${env:rithvar2}"
-        $ruri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
-        $rb = @{
+        $testSuiteId = "${env:testSuiteId}"
+        $testCaseId = "${env:testCaseId}"
+        $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
+        $body = @{
           resources = @{
             repositories = @{
               self = @{
@@ -27,16 +27,21 @@ steps:
             }
           }
           templateParameters = @{
-            rivar1 = $r
-            rivar2 = $r1
+            testSuiteId = $testSuiteId
+            testCaseId = $testCaseId
           }
         } | ConvertTo-Json -Depth 10
-        $rih = @{
+        $headers = @{
           Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
           "Content-Type" = "application/json"
         }
-        Invoke-RestMethod -Uri $ruri -Method Post -Body $rb -Headers $rih
+        Write-Host "Triggering second pipeline..."
+        Write-Host "URI: $uri"
+        Write-Host "Body: $body"
+        Write-Host "Headers: $headers"
+        $response = Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $headers
+        Write-Host "Response: $($response | ConvertTo-Json -Depth 10)"
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-       rivar1: $(rithvar1)
-       rivar2: $(rithvar2)
+      testSuiteId: $(testSuiteId)
+      testCaseId: $(testCaseId)
