@@ -1,0 +1,18 @@
+trigger: none
+
+pool:
+  vmImage: 'windows-latest'
+
+parameters:
+  - name: testSuiteId
+    type: string
+    default: ''
+  - name: testCaseId
+    type: string
+    default: ''
+
+steps:
+  - script: |
+      echo "This pipeline was triggered by the first pipeline."
+      echo "Test Suite ID: ${{ parameters.testSuiteId }}"
+      echo "Test Case ID: ${{ parameters.testCaseId }}"
