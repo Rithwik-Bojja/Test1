@@ -1,5 +1,3 @@
-name: testpipe1
-
 trigger:
 - main
 
@@ -7,30 +5,34 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-  displayName: 'Use Python 3.x'
+  - script: |
+      echo "Hi"
+      echo "##vso[task.setvariable variable=testSuiteId;isOutput=true]12345"
+      echo "##vso[task.setvariable variable=testCaseId;isOutput=true]67890"
+    name: SetVariables
 
-- script: |
-    # Install the 'distutils' module
-    pip install distutils
-    # Install the Azure CLI and add the Azure DevOps extension
-    pip install azure-cli
-    az extension add --name azure-devops
-    # Create the variable group and set variables
-    az pipelines variable-group create --name "PipelineVariables" --authorize true --variables one=4567 TestSuiteId=12345 TestCaseId=67890 
-  displayName: 'Create variable group'
-  env:
-    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
-
-- script: |
-    # Reference the variable group variables
-    echo $(PipelineVariables.one)
-    echo "Test Suite ID: $(PipelineVariables.TestSuiteId)"
-    echo "Test Case ID: $(PipelineVariables.TestCaseId)"
-  displayName: 'Use variables from variable group'
-  env:
-    PipelineVariables.one: $(PipelineVariables.one)
-    PipelineVariables.TestSuiteId: $(PipelineVariables.TestSuiteId)
-    PipelineVariables.TestCaseId: $(PipelineVariables.TestCaseId)
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: 'gitHub.com_Rithwik-Bojja' # Ensure you have the correct Azure service connection
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Triggering Second Pipeline..."
+        curl -u $(System.AccessToken): -X POST \
+        -H "Content-Type: application/json" \
+        -d '{
+              "resources": {
+                "repositories": {
+                  "self": {
+                    "refName": "refs/heads/main"
+                  }
+                }
+              },
+              "templateParameters": {
+                "testSuiteId": "$(SetVariables.testSuiteId)",
+                "testCaseId": "$(SetVariables.testCaseId)"
+              }
+            }' \
+        https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1
+    env:
+      System_AccessToken: $(System.AccessToken)
