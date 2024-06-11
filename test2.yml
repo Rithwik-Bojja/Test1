@@ -4,15 +4,15 @@ pool:
   vmImage: 'windows-latest'
 
 parameters:
-  - name: rivar1
+  - name: rithvar1
     type: string
     default: ''
-  - name: rivar2
+  - name: rithvar2
     type: string
     default: ''
 
 steps:
   - script: |
       echo "Helo Rithwik this pipeline is trggered by 1st one"
-      echo "Variable 1: ${{ parameters.rivar1 }}"
-      echo "variable 2: ${{ parameters.rivar2 }}"
+      echo "Variable 1: ${{ parameters.rithvar1 }}"
+      echo "variable 2: ${{ parameters.rithvar2 }}"
