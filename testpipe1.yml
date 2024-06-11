@@ -17,7 +17,7 @@ steps:
       script: |
         $testSuiteId = "${env:testSuiteId}"
         $testCaseId = "${env:testCaseId}"
-        $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
+        $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/44/runs?api-version=6.0-preview.1"
         $body = @{
           resources = @{
             repositories = @{
