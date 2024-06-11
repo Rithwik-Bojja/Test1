@@ -1,16 +1,11 @@
 trigger: none
-
 pool:
   vmImage: 'windows-latest'
-
 parameters:
   - name: rithvar1
     type: string
-    default: ''
   - name: rithvar2
     type: string
-    default: ''
-
 steps:
   - script: |
       echo "Helo Rithwik this pipeline is trggered by 1st one"
