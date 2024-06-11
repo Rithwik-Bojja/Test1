@@ -27,8 +27,8 @@ steps:
             }
           }
           templateParameters = @{
-            ri_var1 = $r
-            ri_var2 = $r1
+            rivar1 = $r
+            rivar2 = $r1
           }
         } | ConvertTo-Json -Depth 10
         $ri_h = @{
@@ -38,5 +38,5 @@ steps:
         Invoke-RestMethod -Uri $r_uri -Method Post -Body $rb -Headers $ri_h
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-       ri_var1: $(rithvar1)
-       ri_var2: $(rithvar2)
+       rivar1: $(rithvar1)
+       rivar2: $(rithvar2)
