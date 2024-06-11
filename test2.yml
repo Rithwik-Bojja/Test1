@@ -13,6 +13,6 @@ parameters:
 
 steps:
   - script: |
-      echo "This pipeline was triggered by the first pipeline."
+      echo "Helo Rithwik this pipeline is trggered by 1st one"
       echo "Variable 1: ${{ parameters.ri_var1 }}"
       echo "variable 2: ${{ parameters.ri_var2 }}"
