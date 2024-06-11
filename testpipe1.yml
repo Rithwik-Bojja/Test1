@@ -2,23 +2,23 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 steps:
   - script: |
-      echo "Setting variables"
-      echo "##vso[task.setvariable variable=testSuiteId]12345"
-      echo "##vso[task.setvariable variable=testCaseId]67890"
+      echo "Hello Rithwik, I am setting varaibles"
+      echo "##vso[task.setvariable variable=rith_var_1]007"
+      echo "##vso[task.setvariable variable=rith_var_2]008"
     name: SetVariables
 
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
-        $testSuiteId = "${env:testSuiteId}"
-        $testCaseId = "${env:testCaseId}"
-        $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
-        $body = @{
+        $r = "${env:rith_var_1}"
+        $r1 = "${env:rith_var_2}"
+        $r_uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
+        $rb = @{
           resources = @{
             repositories = @{
               self = @{
@@ -27,20 +27,16 @@ steps:
             }
           }
           templateParameters = @{
-            testSuiteId = $testSuiteId
-            testCaseId = $testCaseId
+            ri_var1 = $r
+            ri_var2 = $r1
           }
         } | ConvertTo-Json -Depth 10
-        $headers = @{
+        $ri_h = @{
           Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
           "Content-Type" = "application/json"
         }
-        Write-Host "Triggering second pipeline..."
-        Write-Host "URI: $uri"
-        Write-Host "Body: $body"
-        Write-Host "Headers: $headers"
-        Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $headers
+        Invoke-RestMethod -Uri $r_uri -Method Post -Body $rb -Headers $ri_h
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-      testSuiteId: $(testSuiteId)
-      testCaseId: $(testCaseId)
+       ri_var1: $(rith_var_1)
+       ri_var2: $(rith_var_2)
