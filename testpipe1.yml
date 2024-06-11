@@ -33,6 +33,10 @@ steps:
           Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
           "Content-Type" = "application/json"
         }
+        Write-Host "Triggering second pipeline..."
+        Write-Host "URI: $uri"
+        Write-Host "Body: $body"
+        Write-Host "Headers: $headers"
         Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $headers
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
