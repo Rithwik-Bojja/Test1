@@ -2,37 +2,37 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 steps:
   - script: |
-      echo "Hi"
+      echo "Setting variables"
       echo "##vso[task.setvariable variable=testSuiteId;isOutput=true]12345"
       echo "##vso[task.setvariable variable=testCaseId;isOutput=true]67890"
     name: SetVariables
 
-  - task: AzureCLI@2
+  - task: PowerShell@2
     inputs:
-      azureSubscription: 'gitHub.com_Rithwik-Bojja' # Ensure you have the correct Azure service connection
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        echo "Triggering Second Pipeline..."
-        curl -u $(System.AccessToken): -X POST \
-        -H "Content-Type: application/json" \
-        -d '{
-              "resources": {
-                "repositories": {
-                  "self": {
-                    "refName": "refs/heads/main"
-                  }
-                }
-              },
-              "templateParameters": {
-                "testSuiteId": "$(SetVariables.testSuiteId)",
-                "testCaseId": "$(SetVariables.testCaseId)"
+      targetType: 'inline'
+      script: |
+        $uri = "https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1"
+        $body = @{
+          resources = @{
+            repositories = @{
+              self = @{
+                refName = "refs/heads/main"
               }
-            }' \
-        https://dev.azure.com/v-scheedella/MT%20Stack%20Overflow/_apis/pipelines/21/runs?api-version=6.0-preview.1
+            }
+          }
+          templateParameters = @{
+            testSuiteId = "$(testSuiteId)"
+            testCaseId = "$(testCaseId)"
+          }
+        } | ConvertTo-Json -Depth 10
+        $headers = @{
+          Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+          "Content-Type" = "application/json"
+        }
+        Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $headers
     env:
-      System_AccessToken: $(System.AccessToken)
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
