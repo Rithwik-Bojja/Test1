@@ -1,9 +1,14 @@
-# templates/my-template.yaml
-steps:
-  - task: PowerShell@2
-    displayName: Run Script task
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-    inputs:
-      targetType: 'filepath'
-      filePath: $(Pipeline.Workspace)/Test/rith.ps1
+# test1-pipeline.yaml
+resources:
+  repositories:
+    - repository: testrepo
+      type: git
+      name: Test
+      ref: refs/heads/main
+
+stages:
+  - stage: Test
+    jobs:
+      - job: RunScript
+        steps:
+          - template: templates/my-template.yaml@mytemplates
