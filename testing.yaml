@@ -1,10 +1,10 @@
-# test1-pipeline.yaml
 resources:
   repositories:
     - repository: testrepo
-      type: git
-      name: Test
-      ref: refs/heads/main
+      type: github
+      name: Rithwik-Bojja/Test
+      endpoint: GitHubConnection
+
 
 stages:
   - stage: Test
