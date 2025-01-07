@@ -1,7 +1,8 @@
+# pipe.yaml
 trigger:
   branches:
     include:
-      - main
+      - main  # The branch that triggers this pipeline
 
 pool:
   vmImage: 'windows-latest'
@@ -9,6 +10,6 @@ pool:
 stages:
 - stage: PrintStage
   jobs:
-  - template: templates/template.yml  # Reference the template here
+  - template: template.yaml  # Reference the template here
     parameters:
       message: 'This is a custom message from the pipeline!'
