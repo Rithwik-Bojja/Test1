@@ -6,4 +6,4 @@ steps:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     inputs:
       targetType: 'filepath'
-      filePath: $(Pipeline.Workspace)/mytemplates/scripts/my-script.ps1
+      filePath: $(Pipeline.Workspace)/Test/rith.ps1
