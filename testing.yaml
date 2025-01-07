@@ -1,15 +1,19 @@
 resources:
   repositories:
-    - repository: testrepo
+    - repository: testrepo  # This is an alias
       type: github
-      name: Rithwik-Bojja/Test
-      endpoint: github.com_Rithwik-Bojja
-
+      name: Rithwik-Bojja/Test  # Full GitHub repo name
+      endpoint: GitHubConnection
 
 stages:
   - stage: Test
     jobs:
-      - job: RunScript
-      inputs:
-      targetType: 'filepath'
-      filePath: $(Pipeline.Workspace)/testrepo/rith.ps1
+      - job: RunScriptJob
+        steps:
+          - task: PowerShell@2
+            displayName: "Run Script task"
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            inputs:
+              targetType: 'filepath'
+              filePath: "$(Pipeline.Workspace)/testrepo/rith.ps1"
