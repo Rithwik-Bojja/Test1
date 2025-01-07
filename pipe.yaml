@@ -18,6 +18,6 @@ resources:
 stages:
 - stage: PrintStage
   jobs:
-  - template: templates/template.yaml@templatesRepo  # Reference the template from the GitHub repository
+  - template: template.yaml@templatesRepo  # Reference the template from the GitHub repository
     parameters:
       message: 'This is a custom message from the pipeline!'
