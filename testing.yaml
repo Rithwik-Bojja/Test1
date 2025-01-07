@@ -3,7 +3,7 @@ resources:
     - repository: testrepo
       type: github
       name: Rithwik-Bojja/Test
-      endpoint: GitHubConnection
+      endpoint: github.com_Rithwik-Bojja
 
 
 stages:
