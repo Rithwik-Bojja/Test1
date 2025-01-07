@@ -1,0 +1,14 @@
+# template.yml
+parameters:
+  - name: message
+    type: string
+    default: 'Hello, this is a message from the template!'
+
+jobs:
+- job: PrintMessage
+  pool:
+    vmImage: 'windows-latest'  # Use a Windows agent since it's PowerShell
+  steps:
+    - powershell: |
+        Write-Host "${{ parameters.message }}"
+      displayName: 'Print message'
