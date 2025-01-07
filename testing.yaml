@@ -1,0 +1,9 @@
+# templates/my-template.yaml
+steps:
+  - task: PowerShell@2
+    displayName: Run Script task
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    inputs:
+      targetType: 'filepath'
+      filePath: $(Pipeline.Workspace)/mytemplates/scripts/my-script.ps1
