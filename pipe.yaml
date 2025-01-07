@@ -7,9 +7,16 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+resources:
+  repositories:
+    - repository: templatesRepo  # Alias for the template repository
+      type: git
+      name: 'Rithwik-Bojja/Test'  # The organization and repo name
+      ref: refs/heads/main  # You can specify a branch or commit hash
+
 stages:
 - stage: PrintStage
   jobs:
-  - template: template.yaml  # Reference the template here
+  - template: template.yaml@templatesRepo  # Reference the template from another repo
     parameters:
       message: 'This is a custom message from the pipeline!'
