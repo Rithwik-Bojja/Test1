@@ -9,14 +9,15 @@ pool:
 
 resources:
   repositories:
-    - repository: templatesRepo  # Alias for the template repository
+    - repository: templatesRepo  # Alias for the GitHub repository
       type: git
-      name: 'Rithwik-Bojja/Test'  # The organization and repo name
-      ref: refs/heads/main  # You can specify a branch or commit hash
+      name: 'Rithwik-Bojja/Test'  # GitHub username and repository name
+      ref: refs/heads/main  # Use the main branch of the test repository
+      endpoint: 'github.com_Rithwik-Bojja'  # The service connection you created for GitHub
 
 stages:
 - stage: PrintStage
   jobs:
-  - template: template.yaml@templatesRepo  # Reference the template from another repo
+  - template: templates/template.yaml@templatesRepo  # Reference the template from the GitHub repository
     parameters:
       message: 'This is a custom message from the pipeline!'
