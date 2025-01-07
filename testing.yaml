@@ -10,5 +10,6 @@ stages:
   - stage: Test
     jobs:
       - job: RunScript
-        steps:
-          - template: templates/my-template.yaml@mytemplates
+      inputs:
+      targetType: 'filepath'
+      filePath: $(Pipeline.Workspace)/testrepo/rith.ps1
